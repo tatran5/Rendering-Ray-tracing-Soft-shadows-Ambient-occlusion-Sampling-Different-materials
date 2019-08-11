@@ -12,19 +12,25 @@ What I created (or implement -- which would be marked I):
 Result:
 
 Ambient occlusion & soft shadow:
+
 <img src="teaTranResults/test_aoSoft.png">
 
 Soft shadow:
+
 <img src="teaTranResults/test_softShadow.png">
 
 Ambient occlusion:
+
 <img src="teaTranResults/test_ao.png">
 
 Lambert:
+
 <img src="teaTranResults/test_cornellBox_lambert.png">
 
-Lambert with multiple lights
+Lambert with multiple lights:
+
 <img src="teaTranResults/test_cornellBoxTwoLightsSimple_lambert.png">
 
-Specular & blinn phong
+Specular & blinn phong:
+
 <img src="teaTranResults/test_specular.png">
