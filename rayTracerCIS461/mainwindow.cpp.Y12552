@@ -1,0 +1,210 @@
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include <QDebug>
+#include <QBuffer>
+#include "sphere.h"
+#include "squareplane.h"
+
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+    connect(ui->pushButton_createAndSave, SIGNAL(clicked(bool)), this, SLOT(on_createAndSave()));
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::on_createAndSave()
+{
+    Point3f eye = Point3f(0.f, 0.f, 10.f);
+    Point3f ref = Point3f(0.f, 0.f, 0.f);
+    Vector3f worldUp = Point3f(0.f, 1.f, 0.f);
+    float fov = 45;
+    float length = 400; //pixel
+    float nearClip = 0.1f;
+    float farClip = 1000.f;
+    Camera cam = Camera(eye, ref, worldUp, fov, nearClip, farClip, length, length);
+    QImage image(length, length, QImage::Format_RGB32);
+
+    testCamera(&image, length, &cam);
+    bool saveSuccess = image.save("rayDir.png");
+    qDebug() << "called save on ray direction";
+    if (saveSuccess) { qDebug() << "saved ray direction";}
+
+    image = QImage(length, length, QImage::Format_RGB32);
+    testSphereIntersection(&image, length, &cam);
+    saveSuccess = image.save("sphere.png");
+    qDebug() << "called save on sphere";
+    if (saveSuccess) { qDebug() << "saved sphere";}
+
+    image = QImage(length, length, QImage::Format_RGB32);
+    testSquarePlaneIntersection(&image, length, &cam);
+    saveSuccess = image.save("squarePlane.png");
+    qDebug() << "called save on square plane";
+    if (saveSuccess) { qDebug() << "saved square plane";}
+
+    image = QImage(length, length, QImage::Format_RGB32);
+    testSceneOneSphereOnePlane(&image, length, &cam);
+    saveSuccess = image.save("testScene_onePlane_oneSphere.png");
+    qDebug() << "called save on test scene with one plane and one sphere";
+    if (saveSuccess) {qDebug() << "saved test scene with one plane and one sphere";}
+
+    image = QImage(length, length, QImage::Format_RGB32);
+    testSceneTwoSphereOnePlane(&image, length, &cam);
+    saveSuccess = image.save("testScene_onePlane_twoSphere.png");
+    qDebug() << "called save on test scene with one plane and two spheres";
+    if (saveSuccess) {qDebug() << "saved test scene with one plane and two spheres";}
+
+}
+
+void MainWindow::testCamera(QImage* p_image, float length, Camera* p_cam)
+{
+    for (int x = 0; x < length; x ++) {
+        for (int y = 0; y < length; y ++) {
+            Ray ray = p_cam->rayCast(Point2f(x, y));
+            vec3 rgb = (ray.m_direction + vec3(1.f, 1.f, 1.f)) * 0.5f;
+            p_image->setPixel(x, y, qRgb(rgb.x * 255.f, rgb.y * 255.f, rgb.z * 255.f));
+        }
+    }
+}
+
+void MainWindow::testSphereIntersection(QImage *p_image, float length, Camera* p_cam)
+{
+    Scene scene = Scene();
+    std::unique_ptr<Primitive> primitive(new Primitive);
+    primitive.get()->m_name = "Sphere";
+    std::unique_ptr<Sphere> ptr(new Sphere());
+    primitive.get()->mup_shape = std::move(ptr);
+
+    scene.m_listUPointerPrim.push_back(std::move(primitive));
+
+    for (int x = 0; x < length; x++) {
+        for (int y = 0; y < length; y++) {
+            Ray ray = p_cam->rayCast(Point2f(x, y));
+            Intersection intersection = Intersection();
+            if (scene.getIntersection(ray, &intersection)) {
+                vec3 rgb = (intersection.m_normal + vec3(1.f, 1.f, 1.f)) * 0.5f;
+                p_image->setPixel(x, y, qRgb(rgb.x * 255.f, rgb.y * 255.f, rgb.z * 255.f));
+            }
+        }
+    }
+}
+
+void MainWindow::testSquarePlaneIntersection(QImage *p_image, float length, Camera* p_cam)
+{
+    Scene scene = Scene();
+    std::unique_ptr<Primitive> primitive(new Primitive);
+    primitive.get()->m_name = "SquarePlane";
+    std::unique_ptr<SquarePlane> up_sPlane(new SquarePlane());
+    primitive.get()->mup_shape = std::move(up_sPlane);
+
+    scene.m_listUPointerPrim.push_back(std::move(primitive));
+
+    for (int x = 0; x < length; x++) {
+        for (int y = 0; y < length; y++) {
+            Ray ray = p_cam->rayCast(Point2f(x, y));
+            Intersection intersection = Intersection();
+            if (scene.getIntersection(ray, &intersection)) {
+                vec3 rgb = (intersection.m_normal + vec3(1.f, 1.f, 1.f)) * 0.5f;
+                p_image->setPixel(x, y, qRgb(rgb.x * 255.f, rgb.y * 255.f, rgb.z * 255.f));
+            }
+        }
+    }
+}
+
+void MainWindow::testSceneTwoSphereOnePlane(QImage *p_image, float length, Camera *p_cam)
+{
+    Scene scene = Scene();
+    scene.p_cam = p_cam;
+
+    std::unique_ptr<Primitive> primitiveSphere(new Primitive);
+    primitiveSphere.get()->m_name = "Sphere0";
+    std::unique_ptr<Sphere>up_sphere(new Sphere());
+    primitiveSphere.get()->mup_shape = std::move(up_sphere);
+    Transform primitiveSphereTrans = Transform(vec3(0.f, 0.f, 1.f), vec3(0.f, 0.f, 45.f), vec3(2.f, 1.f, 1.f));
+    primitiveSphere.get()->mup_shape.get()->m_transform = primitiveSphereTrans;
+
+    std::unique_ptr<Primitive> primitiveSphere1(new Primitive);
+    primitiveSphere1.get()->m_name = "Sphere1";
+    std::unique_ptr<Sphere>up_sphere1(new Sphere());
+    primitiveSphere1.get()->mup_shape = std::move(up_sphere1);
+    Transform primitiveSphereTrans1 = Transform(vec3(0.25f, 0.f, 0.f), vec3(0.f, 0.f, 0.f), vec3(0.5f, 0.5f, 5.f));
+    primitiveSphere1.get()->mup_shape.get()->m_transform = primitiveSphereTrans1;
+
+    std::unique_ptr<Primitive> primitiveSquarePlane(new Primitive);
+    primitiveSquarePlane.get()->m_name = "SquarePlane";
+    std::unique_ptr<SquarePlane> up_sPlane(new SquarePlane());
+    primitiveSquarePlane.get()->mup_shape = std::move(up_sPlane);
+    Transform primitiveSquarePlaneTrans = Transform(vec3(0.f, 0.f, -5.f), vec3(0.f, 30.f, 0.f), vec3(10.f, 10.f, 1.f));
+    primitiveSquarePlane.get()->mup_shape.get()->m_transform = primitiveSquarePlaneTrans;
+
+    scene.m_listUPointerPrim.push_back(std::move(primitiveSphere));
+    scene.m_listUPointerPrim.push_back(std::move(primitiveSphere1));
+    scene.m_listUPointerPrim.push_back(std::move(primitiveSquarePlane));
+
+    int countS = 0;
+    int countS1 = 0;
+    int countSP = 0;
+    int countTotal = 0;
+
+    for (int x = 0; x < length; x++) {
+        for (int y = 0; y < length; y++) {
+            Ray ray = scene.p_cam->rayCast(Point2f(x, y));
+            Intersection intersection = Intersection();
+            if (scene.getIntersection(ray, &intersection)) {
+                vec3 rgb = (intersection.m_normal + vec3(1.f, 1.f, 1.f)) * 0.5f;
+                p_image->setPixel(x, y, qRgb(rgb.x * 255.f, rgb.y * 255.f, rgb.z * 255.f));
+                if (QString::compare(intersection.mp_objectHit->m_name, "Sphere0") == 0) {
+                    countS ++;
+                    qDebug() << "countS" << countS;
+                }
+                if (QString::compare(intersection.mp_objectHit->m_name, "Sphere1") == 0) {
+                    countS1 ++;
+                    qDebug() << "countS1" << countS1;
+                }
+                if (QString::compare(p_curPrimitive->m_name, "SquarePlane") == 0) {
+                    countSP ++;
+                    qDebug() << "countSP" << countSP;
+                }
+            }
+        }
+    }
+}
+
+void MainWindow::testSceneOneSphereOnePlane(QImage *p_image, float length, Camera *p_cam)
+{
+    Scene scene = Scene();
+    scene.p_cam = p_cam;
+
+    std::unique_ptr<Primitive> primitiveSphere(new Primitive);
+    primitiveSphere.get()->m_name = "Sphere";
+    std::unique_ptr<Sphere>up_sphere(new Sphere());
+    primitiveSphere.get()->mup_shape = std::move(up_sphere);
+    Transform primitiveSphereTrans = Transform(vec3(-1.f, 1.f, 0.f), vec3(0.f, 0.f, 0.f), vec3(2.f, 4.f, 2.f));
+    primitiveSphere.get()->mup_shape.get()->m_transform = primitiveSphereTrans;
+
+    std::unique_ptr<Primitive> primitiveSquarePlane(new Primitive);
+    primitiveSquarePlane.get()->m_name = "SquarePlane";
+    std::unique_ptr<SquarePlane> up_sPlane(new SquarePlane());
+    primitiveSquarePlane.get()->mup_shape = std::move(up_sPlane);
+    Transform primitiveSquarePlaneTrans = Transform(vec3(0.f, 0.f, -5.f), vec3(0.f, 30.f, 0.f), vec3(10.f, 10.f, 1.f));
+    primitiveSquarePlane.get()->mup_shape.get()->m_transform = primitiveSquarePlaneTrans;
+
+    scene.m_listUPointerPrim.push_back(std::move(primitiveSphere));
+    scene.m_listUPointerPrim.push_back(std::move(primitiveSquarePlane));
+
+    for (int x = 0; x < length; x++) {
+        for (int y = 0; y < length; y++) {
+            Ray ray = scene.p_cam->rayCast(Point2f(x, y));
+            Intersection intersection = Intersection();
+            if (scene.getIntersection(ray, &intersection)) {
+                vec3 rgb = (intersection.m_normal + vec3(1.f, 1.f, 1.f)) * 0.5f;
+                p_image->setPixel(x, y, qRgb(rgb.x * 255.f, rgb.y * 255.f, rgb.z * 255.f));
+            }
+        }
+    }
+}

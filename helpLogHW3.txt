@@ -1,0 +1,4 @@
+Help log
+
+- How to do sphere cap? PDF?
+glm::mix will help to interpolate for z, and for sphere cap use trig to figure out (Kristin)

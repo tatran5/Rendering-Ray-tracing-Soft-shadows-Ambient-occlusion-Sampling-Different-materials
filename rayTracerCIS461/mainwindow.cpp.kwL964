@@ -1,0 +1,75 @@
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include <QDebug>
+#include <QBuffer>
+#include "sphere.h"
+#include "squareplane.h"
+
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+    connect(ui->pushButton_createAndSave, SIGNAL(clicked(bool)), this, SLOT(on_createAndSave()));
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::on_createAndSave()
+{
+    Point3f eye = Point3f(0.f, 0.f, 10.f);
+    Point3f ref = Point3f(0.f, 0.f, 0.f);
+    Vector3f worldUp = Point3f(0.f, 1.f, 0.f);
+    float fov = 45;
+    float length = 400; //pixel
+    float nearClip = 0.1f;
+    float farClip = 1000.f;
+    Camera cam = Camera(eye, ref, worldUp, fov, nearClip, farClip, length, length);
+    QImage image(length, length, QImage::Format_RGB32);
+
+    Scene scene = Scene();
+    scene.p_cam = &cam;
+
+    //Testing camera
+    // cast a ray through every pixel on the screen
+    /* for (int x = 0; x < length; x ++) {
+        for (int y = 0; y < length; y ++) {
+            Ray ray = cam.rayCast(Point2f(x, y));
+            vec3 rgb = (ray.m_direction + vec3(1.f, 1.f, 1.f)) * 0.5f;
+            image.setPixel(x, y, qRgb(rgb.x * 255.f, rgb.y * 255.f, rgb.z * 255.f));
+        }
+    }*/
+    // Testing finishes
+
+    //Testing sphere intersection
+
+    /*    Primitive primitive;
+    primitive.m_name = "Sphere";
+    std::unique_ptr<Sphere> ptr(new Sphere());
+    primitive.mup_shape = std::move(ptr);
+
+    for (int x = 0; x < length; x++) {
+        for (int y = 0; y < length; y++) {
+            Ray ray = cam.rayCast(Point2f(x, y));
+            Intersection intersection = Intersection();
+            intersection.mp_objectHit = &primitive;
+            if (primitive.getIntersection(ray, &intersection)) {
+                vec3 rgb = (intersection.m_normal + vec3(1.f, 1.f, 1.f)) * 0.5f;
+                image.setPixel(x, y, qRgb(rgb.x * 255.f, rgb.y * 255.f, rgb.z * 255.f));
+            }
+        }
+    }*/
+
+    //Testing square plane intersection
+    Primitive primitive;
+    primitive.m_name = "Plane";
+    std::unique_ptr<SquarePlane> sPlane =
+            bool saveSuccess = image.save("test.png");
+    qDebug() << "called save";
+    if (saveSuccess) { qDebug() << "saved";}
+    qDebug() << "terminated";
+}
+

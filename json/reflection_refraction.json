@@ -1,0 +1,235 @@
+{
+  "scene": {
+    "camera": {
+      "target": [0, 0, 0],
+      "eye": [0, 0.5, 12],
+      "worldUp": [0, 1, 0],
+      "fov": 50,
+      "width": 400,
+      "height": 400
+    },
+    "geometry": [
+      {
+        "type": "square",
+        "name": "Back Wall",
+        "transform": {
+          "translate": [0, 0, -5],
+          "scale": [10, 10, 1]
+        },
+        "material": "white_diffuse"
+      },
+      {
+        "type": "square",
+        "name": "Right Wall",
+        "transform": {
+          "translate": [5, 0, 0],
+          "rotate": [0, -90, 0],
+          "scale": [10, 10, 1]
+        },
+        "material": "green_diffuse"
+      },
+      {
+        "type": "square",
+        "name": "Left Wall",
+        "transform": {
+          "translate": [-5, 0, 0],
+          "rotate": [0, 90, 0],
+          "scale": [10, 10, 1]
+        },
+        "material": "red_diffuse"
+      },
+      {
+        "type": "square",
+        "name": "Ceiling",
+        "transform": {
+          "translate": [0, 5, 0],
+          "rotate": [90, 0, 0],
+          "scale": [10, 10, 1]
+        },
+        "material": "white_diffuse"
+      },
+      {
+        "type": "square",
+        "name": "Floor",
+        "transform": {
+          "translate": [0, -5, 0],
+          "rotate": [-90, 0, 0],
+          "scale": [10, 10, 1]
+        },
+        "material": "white_diffuse"
+      },
+      {
+        "type": "sphere",
+        "name": "Shiny Sphere",
+        "transform": {
+          "translate": [-2, -5, 0],
+          "scale": [5, 5, 5]
+          },
+        "material": "purple_specular"
+      },
+      {
+        "type": "sphere",
+        "name": "Transparent Sphere 1",
+        "transform": {
+          "translate": [-3, 0, 2],
+          "scale": [4, 4, 4]
+          },
+        "material": "refractive_specular"
+      },
+      {
+        "type": "sphere",
+        "name": "Inside Transparent Sphere 1",
+        "transform": {
+          "translate": [-3, 0, 2],
+          "scale": [2.5, 2.5, 2.5]
+          },
+        "material": "air_bubble_mat"
+      },
+      {
+        "type": "sphere",
+        "name": "Transparent Sphere Green",
+        "transform": {
+          "translate": [3, -2, -3],
+          "scale": [4, 4, 4]
+          },
+        "material": "refractive_specular2"
+      },
+      {
+        "type": "sphere",
+        "name": "Inside Opaque 1",
+        "transform": {
+          "translate": [3, -2, -3],
+          "scale": [1, 1, 1]
+          },
+        "material": "white_diffuse"
+      },
+      {
+        "type": "sphere",
+        "name": "Reflective Sphere Blue1",
+        "transform": {
+          "translate": [-3, 3.5, -3],
+          "scale": [3, 3, 3]
+          },
+        "material": "mirrored_specular2"
+      },
+      {
+        "type": "sphere",
+        "name": "Transparent Sphere 3",
+        "transform": {
+          "translate": [3, 3.5, -3],
+          "scale": [3, 3, 3]
+          },
+        "material": "refractive_specular"
+      },
+      {
+        "type": "sphere",
+        "name": "Reflective Sphere Blue2",
+        "transform": {
+          "translate": [3, 3.5, -3],
+          "scale": [1, 1, 1]
+          },
+        "material": "mirrored_specular2"
+      },
+      {
+        "type": "sphere",
+        "name": "Yellow Sphere",
+        "transform": {
+          "translate": [0, 0, 0],
+          "scale": [2, 2, 2]
+          },
+        "material": "yellow_diffuse"
+      },
+      {
+        "type": "sphere",
+        "name": "Light Source",
+        "transform": {
+          "translate": [0, 4, 5],
+          "scale": [0.5, 0.5, 0.5]
+        },
+        "material": "emissive_material"
+      }
+    ],
+    "material": [
+      {
+        "type": "lambert",
+        "name": "white_diffuse",
+        "baseColor": [1, 1, 1]
+      },
+      {
+        "type": "lambert",
+        "name": "red_diffuse",
+        "baseColor": [1, 0, 0]
+      },
+      {
+        "type": "lambert",
+        "name": "green_diffuse",
+        "baseColor": [0, 1, 0]
+      },
+      {
+        "type": "lambert",
+        "name": "yellow_diffuse",
+        "baseColor": [1, 1, 0.25]
+      },
+      {
+        "type": "phong",
+        "name": "purple_specular",
+        "specularPower": 10,
+        "specularColor": [1, 0, 0],
+        "baseColor": [0.75, 0.0, 0.75]
+      },
+      {
+        "type": "phong",
+        "name": "mirrored_specular",
+        "specularPower": 10,
+        "specularColor": [1, 1, 1],
+        "baseColor": [1,1,1],
+        "reflectivity": 1
+      },
+      {
+        "type": "phong",
+        "name": "mirrored_specular2",
+        "specularPower": 10,
+        "specularColor": [1, 0, 1],
+        "baseColor": [0.25, 0.5, 1],
+        "reflectivity": 1
+      },
+      {
+        "type": "phong",
+        "name": "refractive_specular",
+        "specularPower": 10,
+        "specularColor": [1, 1, 1],
+        "baseColor": [1, 1, 1],
+        "iorIn": 1.33,
+        "iorOut": 1
+      },
+      {
+        "type": "phong",
+        "name": "air_bubble_mat",
+        "specularPower": 10,
+        "specularColor": [1, 1, 1],
+        "baseColor": [1, 1, 1],
+        "iorIn": 1,
+        "iorOut": 1.33
+      },
+      {
+        "type": "phong",
+        "name": "refractive_specular2",
+        "specularPower": 10,
+        "specularColor": [1, 1, 1],
+        "baseColor": [0.15, 1, 0.15],
+        "iorIn": 1.33,
+        "iorOut": 1
+      },
+      {
+        "type": "lambert",
+        "name": "emissive_material",
+        "baseColor": [1, 1, 1],
+        "emissive": "true"
+      }
+    ],
+    "integrator": {
+      "type": "raytrace",
+      "maxDepth": 5
+    }
+  }
+}

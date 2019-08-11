@@ -1,0 +1,1 @@
+Taken from repo in class (coded by self): https://github.com/CIS-461-2019/homework-03-soft-shadows-and-ambient-occlusion-tatran5

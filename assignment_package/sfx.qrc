@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>forms/nope.wav</file>
+        <file>forms/incorrect.wav</file>
+        <file>forms/doh.wav</file>
+    </qresource>
+</RCC>

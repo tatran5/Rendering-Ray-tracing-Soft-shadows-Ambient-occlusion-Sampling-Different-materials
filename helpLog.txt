@@ -1,0 +1,14 @@
+Help log
+
+Aliya
+How to refraction?
+- https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/reflection-refraction-fresnel?fbclid=IwAR29zo68sev1Vq83-tCuJd8BBgBRvofjQnWrpK9wGkJfWf8JkaZimO56gEA
+
+Enoch
+What is wrong with the shadow?
+- To do shadow, taken into account that there might be a specular transmission objects in between the current intersection and the light source, in which case you would want to multiply the color by the base of the material of the spectrans shape. You have to recursively check if there is an opaque block blocking the current (and potentially next) intersection
+
+Kristin
+The shadow seems too light?
+- Have to make the multiplied color combine with lambert formula, then add to the existing color
+

@@ -1,0 +1,56 @@
+#include "lambertmaterial.h"
+#include <qdebug.h>
+
+LambertMaterial::LambertMaterial() : LambertMaterial(Color3f(0.f, 0.f, 0.f), nullptr) {}
+
+LambertMaterial::LambertMaterial(Color3f color, Scene* p_scene)
+{
+    m_color = color;
+    mp_scene = p_scene;
+}
+
+/* Should sample all light sources in the scene for their color (testing for visibility)
+and return the sum of their colors multiplied with the Material base color. */
+Color3f LambertMaterial::getScatteredColor(Intersection *p_intersection, Ray *p_ray)
+{
+    Color3f color = Color3f(0.f, 0.f, 0.f);
+    for (int i = 0; i < mp_scene->m_listUPointerPrim.size(); i ++) {
+        /* check if
+         * the current primitive has a light source
+         * the given intersection can see that light source */
+        Primitive* p_prim = mp_scene->m_listUPointerPrim.at(i).get();
+        Light* p_light = p_prim->mup_light.get();
+        if (p_light != nullptr &&
+                p_light->canSeeLight(p_intersection)) {
+            Color3f hueIntensity = mp_scene->m_listUPointerPrim.at(i).get()->mup_light.get()->m_hueIntensity;
+
+            //apply lamber's cosine law
+            vec4 lightPosV4 = p_light->m_transform.m_worldTransform * vec4(0.f, 0.f, 0.f, 1.f);
+            Vector3f lightPos = Vector3f(lightPosV4.x, lightPosV4.y, lightPosV4.z);
+            Vector3f lightDirNotNormalized = lightPos - p_intersection->m_point;
+
+            //the light is not testing against itself
+            if (lightDirNotNormalized.x != 0.f || lightDirNotNormalized.y != 0.f
+                    || lightDirNotNormalized.z != 0.f) {
+                Vector3f lightDir = glm::normalize(lightDirNotNormalized);
+                Color3f lightAdded = hueIntensity * glm::dot(p_intersection->m_normal,
+                                                             glm::normalize(lightDir));
+                //need the dot product with the light BEFORE adding
+                color += lightAdded;
+qDebug() << "p_intersection point" << p_intersection->m_point.x << p_intersection->m_point.y << p_intersection->m_point.z;
+                /*
+                qDebug() << "hue intensity" << hueIntensity.x << hueIntensity.y << hueIntensity.z;
+                qDebug() << "p_intersection point" << p_intersection->m_point.x << p_intersection->m_point.y << p_intersection->m_point.z;
+                qDebug() << "light pos" << lightPos.x << lightPos.y << lightPos.z;
+                  qDebug() << "light dir not normalized" << lightDirNotNormalized.x <<
+                              lightDirNotNormalized.y << lightDirNotNormalized.z;
+                qDebug() << "light dir" << lightDir.x << lightDir.y << lightDir.z;
+                qDebug() << "lightAdded" << lightAdded.x << lightAdded.y << lightAdded.z;
+                qDebug() << "color" << color.x << color.y << color.z;*/
+            }
+        }
+    }
+    return color * m_color;
+    //process:
+    /*for each light, after getting the hueIntensity, multiiply intensity and the basecolor with your material and then do the */
+}
