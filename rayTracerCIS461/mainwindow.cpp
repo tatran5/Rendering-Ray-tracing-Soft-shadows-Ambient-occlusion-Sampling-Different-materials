@@ -41,31 +41,12 @@ void MainWindow::on_createAndSave()
     QImage image(length, length, QImage::Format_RGB32);
     bool saveSuccess = false;
 
-    /* //Test ambiemt occlusion only ------------
-    image = QImage(length, length, QImage::Format_RGB32);
-    testSceneAO(&image, length, &cam);
-    saveSuccess = image.save("test_ao.png");
-    if (saveSuccess) {
-        qDebug() << "saved test_ao.png";
-    }*/
-
-   /* //Test soft shadow only -------------------
-    eye = Point3f(10.f, 10.f, 10.f);
-    cam = Camera(eye, ref, worldUp, fov, nearClip, farClip,
-                 length, length);
-    image = QImage(length, length, QImage::Format_RGB32);
-    testSoftShadow(&image, length, &cam);
-    saveSuccess = image.save("test_softShadow.png");
-    if (saveSuccess) {
-        qDebug() << "saved test_softShadow.png";
-    }*/
-
     //Test required render ------------
     image = QImage(length, length, QImage::Format_RGB32);
-    testSceneAOSoft(&image, length, &cam);
-    saveSuccess = image.save("test_aoSoft.png");
+    testReflectionRefraction(&image, length, &cam);
+    saveSuccess = image.save("new.png");
     if (saveSuccess) {
-        qDebug() << "saved test_aoSoft.png";
+        qDebug() << "saved new.png";
     }
 }
 
