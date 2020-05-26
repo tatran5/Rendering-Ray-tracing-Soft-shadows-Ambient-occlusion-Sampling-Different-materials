@@ -12,8 +12,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = rayTracerCIS461
 TEMPLATE = app
 include(materials/materials.pri)
-include(lights/lights.pri)
-include(shapes/shapes.pri)
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -34,6 +32,15 @@ SOURCES += \
     camera.cpp \
     transform.cpp \
     intersection.cpp \
+    primitive.cpp \
+    shape.cpp \
+    scene.cpp \
+    sphere.cpp \
+    squareplane.cpp \
+    light.cpp \
+    pointlight.cpp \
+    disc.cpp \
+    arealight.cpp \
     warpfunctions.cpp \
     sampler.cpp \
     ambientocclusion.cpp \
@@ -46,6 +53,15 @@ HEADERS += \
     camera.h \
     transform.h \
     intersection.h \
+    primitive.h \
+    shape.h \
+    scene.h \
+    sphere.h \
+    squareplane.h \
+    light.h \
+    pointlight.h \
+    disc.h \
+    arealight.h \
     warpfunctions.h \
     pcg32.h \
     sampler.h \
