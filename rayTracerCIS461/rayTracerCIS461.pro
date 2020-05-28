@@ -4,6 +4,8 @@
 #
 #-------------------------------------------------
 
+include(lights/lights.pri)
+include(materials/materials.pri)
 
 QT       += core gui
 
@@ -11,7 +13,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = rayTracerCIS461
 TEMPLATE = app
-include(materials/materials.pri)
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -37,10 +38,7 @@ SOURCES += \
     scene.cpp \
     sphere.cpp \
     squareplane.cpp \
-    light.cpp \
-    pointlight.cpp \
     disc.cpp \
-    arealight.cpp \
     warpfunctions.cpp \
     sampler.cpp \
     ambientocclusion.cpp \
@@ -58,10 +56,7 @@ HEADERS += \
     scene.h \
     sphere.h \
     squareplane.h \
-    light.h \
-    pointlight.h \
     disc.h \
-    arealight.h \
     warpfunctions.h \
     pcg32.h \
     sampler.h \
@@ -80,5 +75,3 @@ INCLUDEPATH += include
 
 DEPENDPATH += include
 
-DISTFILES += \
-    lights/lights.pri
