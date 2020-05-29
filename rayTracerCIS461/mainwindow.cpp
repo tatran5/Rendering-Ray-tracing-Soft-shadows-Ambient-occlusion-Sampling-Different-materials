@@ -43,9 +43,10 @@ void MainWindow::on_createAndSave()
 
     //Test required render ------------
     image = QImage(length, length, QImage::Format_RGB32);
-    testReflectionRefraction(&image, length, &cam);
+    testCornellBox(&image, length, &cam);
     saveSuccess = image.save("new.png");
     if (saveSuccess) {
+        ui->label->setPixmap((QPixmap::fromImage(image)));
         qDebug() << "saved new.png";
     }
 }
