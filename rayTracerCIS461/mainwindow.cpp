@@ -13,6 +13,7 @@
 #include "light.h"
 #include "pointlight.h"
 #include "arealight.h"
+#include "terrainnode.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -42,13 +43,18 @@ void MainWindow::on_createAndSave()
     bool saveSuccess = false;
 
     //Test required render ------------
-    image = QImage(length, length, QImage::Format_RGB32);
-    testCornellBox(&image, length, &cam);
-    saveSuccess = image.save("new.png");
-    if (saveSuccess) {
-        ui->label->setPixmap((QPixmap::fromImage(image)));
-        qDebug() << "saved new.png";
-    }
+//    image = QImage(length, length, QImage::Format_RGB32);
+//    testCornellBox(&image, length, &cam);
+//    saveSuccess = image.save("new.png");
+//    if (saveSuccess) {
+//        ui->label->setPixmap((QPixmap::fromImage(image)));
+//        qDebug() << "saved new.png";
+//    }
+
+
+    // Test terrain node
+    TerrainNode terNode = TerrainNode();
+    qDebug() << "terNode created";
 }
 
 void MainWindow::testSceneAOSoft(QImage *p_image, float length, Camera *p_cam) {

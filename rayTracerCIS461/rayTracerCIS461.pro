@@ -8,6 +8,7 @@ include(lights/lights.pri)
 include(materials/materials.pri)
 include(sampling/sampling.pri)
 include(shapes/shapes.pri)
+include(terrain/terrain.pri)
 
 QT       += core gui
 
