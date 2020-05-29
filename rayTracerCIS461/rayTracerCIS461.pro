@@ -6,6 +6,8 @@
 
 include(lights/lights.pri)
 include(materials/materials.pri)
+include(sampling/sampling.pri)
+include(shapes/shapes.pri)
 
 QT       += core gui
 
@@ -33,14 +35,7 @@ SOURCES += \
     camera.cpp \
     transform.cpp \
     intersection.cpp \
-    primitive.cpp \
-    shape.cpp \
     scene.cpp \
-    sphere.cpp \
-    squareplane.cpp \
-    disc.cpp \
-    warpfunctions.cpp \
-    sampler.cpp \
     ambientocclusion.cpp \
     utils.cpp
 
@@ -51,19 +46,8 @@ HEADERS += \
     camera.h \
     transform.h \
     intersection.h \
-    primitive.h \
-    shape.h \
     scene.h \
-    sphere.h \
-    squareplane.h \
-    disc.h \
-    warpfunctions.h \
-    pcg32.h \
-    sampler.h \
-    enums.h \
     ambientocclusion.h \
-    enums.h \
-    pcg32.h \
     utils.h
 
 FORMS += \
