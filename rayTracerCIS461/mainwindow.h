@@ -21,6 +21,10 @@ public:
 private:
     Ui::MainWindow *ui;
 
+    // Terrain
+    void testTerrain(QImage* p_image, float length, Camera *p_cam);
+
+
     //For debugging purpose
     void testCamera(QImage* p_image, float length, Camera *p_cam);
     void testSphereIntersection(QImage* p_image, float length, Camera* p_cam);

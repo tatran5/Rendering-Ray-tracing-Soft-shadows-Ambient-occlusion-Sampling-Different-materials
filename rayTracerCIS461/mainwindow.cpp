@@ -14,6 +14,7 @@
 #include "pointlight.h"
 #include "arealight.h"
 #include "terrainnode.h"
+#include "fractalterrain.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -43,18 +44,33 @@ void MainWindow::on_createAndSave()
     bool saveSuccess = false;
 
     //Test required render ------------
-//    image = QImage(length, length, QImage::Format_RGB32);
-//    testCornellBox(&image, length, &cam);
-//    saveSuccess = image.save("new.png");
-//    if (saveSuccess) {
-//        ui->label->setPixmap((QPixmap::fromImage(image)));
-//        qDebug() << "saved new.png";
-//    }
+    image = QImage(length, length, QImage::Format_RGB32);
+    testTerrain(&image, length, &cam);
+    saveSuccess = image.save("new.png");
+    if (saveSuccess) {
+        ui->label->setPixmap((QPixmap::fromImage(image)));
+        qDebug() << "saved new.png";
+    }
+}
 
-
+void MainWindow::testTerrain(QImage *p_image, float length, Camera *p_cam) {
+    Scene scene = Scene();
+    scene.p_cam = p_cam;
     // Test terrain node
     TerrainNode terNode = TerrainNode();
-    qDebug() << "terNode created";
+    FractalTerrain terrain = FractalTerrain(terNode);
+
+    for (int x = 0; x < 1; x++) {
+        for (int y = 0; y < 1; y++) {
+            Ray ray = scene.p_cam->rayCast(Point2f(x, y));
+            Intersection intersection = Intersection();
+            terrain.getIntersection(ray, &intersection);
+            //
+           // vec3 rgb = (intersection.m_normal + vec3(1.f, 1.f, 1.f)) * 0.5f;
+            //p_image->setPixel(x, y, qRgb(rgb.x * 255.f, rgb.y * 255.f, rgb.z * 255.f));
+
+        }
+    }
 }
 
 void MainWindow::testSceneAOSoft(QImage *p_image, float length, Camera *p_cam) {
