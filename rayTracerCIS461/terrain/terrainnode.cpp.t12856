@@ -1,0 +1,31 @@
+#include "terrainnode.h"
+#include <QDebug>
+
+TerrainNode::TerrainNode() : TerrainNode(-1) {
+}
+
+TerrainNode::TerrainNode(int depth)
+{
+    mDepth = depth;
+    mVertices = {Point3f(0, 0, 0), Point3f(0, 0, 0), Point3f(0, 0, 0)};
+}
+
+TerrainNode::TerrainNode(int depth, QList<Point3f> vertices) : mDepth(depth)
+{
+    mVertices = {vertices[0], vertices[1], vertices[2]};
+}
+
+TerrainNode::TerrainNode(const TerrainNode& otherNode) :
+    mDepth(otherNode.mDepth)
+{
+    mVertices = {otherNode.mVertices[0], otherNode.mVertices[1],
+                 otherNode.mVertices[2]};
+}
+
+bool TerrainNode::getIntersection(Ray ray,
+                                  Intersection *p_intersection,
+                                  int maxDepth) const {
+    if (mDepth == maxDepth)
+    qDebug() << "TODO";
+    return false;
+}

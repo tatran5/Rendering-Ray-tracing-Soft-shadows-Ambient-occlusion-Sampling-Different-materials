@@ -17,3 +17,6 @@ typedef glm::ivec3 Point3i;
 typedef glm::vec3 Vector3f;
 typedef glm::vec2 Vector2f;
 typedef glm::ivec2 Vector2i;
+
+Vector3f middleVector2(Vector3f v1, Vector3f v2);
+Vector3f middleVector2(Vector3f v1, Vector3f v2, Vector3f add);

@@ -32,21 +32,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
+    intersection.cpp \
     ray.cpp \
     camera.cpp \
     transform.cpp \
-    intersection.cpp \
     scene.cpp \
     ambientocclusion.cpp \
-    utils.cpp
+    utils.cpp \
+    globalincludes.cpp
 
 HEADERS += \
         mainwindow.h \
         globalincludes.h \
+    intersection.h \
     ray.h \
     camera.h \
     transform.h \
-    intersection.h \
     scene.h \
     ambientocclusion.h \
     utils.h

@@ -8,17 +8,19 @@
 class TerrainNode
 {
 public:
+    constexpr static float mInitLength = 1;
     int mDepth;
-    // Three vertices representing polygon at the current depth.
+    // Should only have three vertices representing polygon at the current depth.
     // Order is important due to normal produced
-    Point3f mVertices[3];
+    QList<Point3f> mVertices;
 
     TerrainNode();
     TerrainNode(int depth);
-    TerrainNode(int depth, Point3f vertices[3]);
+    TerrainNode(int depth, QList<Point3f> vertices);
     TerrainNode(const TerrainNode& otherNode);
 
-    getIntersection(Ray ray);
+    bool getIntersection(Ray ray, Intersection* p_isect,
+                         int maxDepth) const;
 };
 
 #endif // NODE_H

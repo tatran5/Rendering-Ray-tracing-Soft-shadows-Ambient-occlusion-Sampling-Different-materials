@@ -58,7 +58,7 @@ void MainWindow::testTerrain(QImage *p_image, float length, Camera *p_cam) {
     scene.p_cam = p_cam;
     // Test terrain node
     TerrainNode terNode = TerrainNode();
-    FractalTerrain terrain = FractalTerrain(terNode);
+    FractalTerrain terrain = FractalTerrain(2, terNode);
 
     for (int x = 0; x < 1; x++) {
         for (int y = 0; y < 1; y++) {
