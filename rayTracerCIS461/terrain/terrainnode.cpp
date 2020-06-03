@@ -1,5 +1,6 @@
 #include "terrainnode.h"
 #include <QDebug>
+#include <cmath>
 
 TerrainNode::TerrainNode() : TerrainNode(-1) {
 }
@@ -25,7 +26,7 @@ TerrainNode::TerrainNode(const TerrainNode& otherNode) :
 bool TerrainNode::getIntersection(Ray ray,
                                   Intersection *p_isect,
                                   int maxDepth) const {
-    float epsilon = 0.0001f;
+    float epsilon = 0.001f;
     if (mDepth < maxDepth) {
         // This node does not have a primtiive facet
         // TODO: CHANGE TO THE RIGHT CALCULATION FOR EXTENT
@@ -46,15 +47,16 @@ bool TerrainNode::getIntersection(Ray ray,
         float d = dot(n, v0);
         float t = (d - dot(n, ray.m_origin)) / dot(n, ray.m_direction);
         // intersection betwen ray and plane
-        Point3f p = ray.m_origin + p_isect->m_t * ray.m_direction;
+        Point3f p = ray.m_origin + t * ray.m_direction;
 
+        // TODO: DEBUG WHEN DONE
         // Use barycentric coordinates to see if the point lies within the triangle
         float areaP01 = length(cross(v0 - p, v1 - p)) * 0.5f;
         float areaP02 = length(cross(v0 - p, v2 - p)) * 0.5f;
         float areaP12 = length(cross(v1 - p, v2 - p)) * 0.5f;
         float area012 = length(cross(v1 - v0, v2 - v0)) * 0.5f;
         float sumSmallAreas = areaP01 + areaP02 + areaP12;
-        if (sumSmallAreas < area012 - epsilon || sumSmallAreas > area012 + epsilon) {
+        if (isnan(sumSmallAreas) || sumSmallAreas < area012 - epsilon || sumSmallAreas > area012 + epsilon) {
             p_isect = nullptr;
             return false;
         }

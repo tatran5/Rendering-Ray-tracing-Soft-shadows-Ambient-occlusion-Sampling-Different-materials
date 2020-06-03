@@ -55,16 +55,20 @@ void MainWindow::on_createAndSave()
 
 void MainWindow::testTerrain(QImage *p_image, float length, Camera *p_cam) {
     Scene scene = Scene();
+    p_cam->m_eye = Point3f(0.f, 0.f, 12);
     scene.p_cam = p_cam;
     // Test terrain node
-    TerrainNode terNode = TerrainNode();
-    FractalTerrain terrain = FractalTerrain(2, terNode);
+    QList<Point3f> verts = {Point3f(-1, 0, 0), Point3f(0, 0, 0), Point3f(-1, 1, 0)};
+    TerrainNode terNode = TerrainNode(0, verts);
+    FractalTerrain terrain = FractalTerrain(0, terNode);
 
-    for (int x = 0; x < 1; x++) {
-        for (int y = 0; y < 1; y++) {
+    for (int x = 0; x < length; x++) {
+        for (int y = 0; y < length; y++) {
             Ray ray = scene.p_cam->rayCast(Point2f(x, y));
             Intersection intersection = Intersection();
-            terrain.getIntersection(ray, &intersection);
+            if (terrain.getIntersection(ray, &intersection)) {
+                p_image->setPixel(x, y, qRgb(255.f, 255.f, 255.f));
+            }
             //
            // vec3 rgb = (intersection.m_normal + vec3(1.f, 1.f, 1.f)) * 0.5f;
             //p_image->setPixel(x, y, qRgb(rgb.x * 255.f, rgb.y * 255.f, rgb.z * 255.f));

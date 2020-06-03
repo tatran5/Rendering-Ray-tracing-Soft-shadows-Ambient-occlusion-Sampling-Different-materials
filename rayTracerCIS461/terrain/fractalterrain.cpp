@@ -6,15 +6,16 @@ FractalTerrain::FractalTerrain(int maxDepth) :
     FractalTerrain(maxDepth, TerrainNode(0)){}
 
 FractalTerrain::FractalTerrain(int maxDepth, TerrainNode rootNode)
-    : mRootNode(rootNode)
+    : mMaxDepth(maxDepth), mRootNode(rootNode)
 {}
 
 bool FractalTerrain::getIntersection(Ray ray, Intersection *p_intersection) {
     QMap<float, TerrainNode> activeNodes;
     // activeNodes[INFINITY] = mRootNode;
 
-    // TODO: Interesect ray with the initial root first
-    handleNodeIntersection(ray, mRootNode, &activeNodes);
+    // TODO: Interesect ray with the initial root first. DELETE  after debug?
+    // delete deturn after test?
+    return handleNodeIntersection(ray, mRootNode, &activeNodes);
 
     while (activeNodes.size() != 0) {
         // Get the closest node to the ray
@@ -51,7 +52,7 @@ bool FractalTerrain::getIntersection(Ray ray, Intersection *p_intersection) {
     }
 }
 
-void FractalTerrain::handleNodeIntersection(Ray ray, TerrainNode node,
+bool FractalTerrain::handleNodeIntersection(Ray ray, TerrainNode node,
                                             QMap<float, TerrainNode> *p_activeNodes) {
     Intersection isect;
     if (node.getIntersection(ray, &isect, mMaxDepth)) {
@@ -73,6 +74,7 @@ void FractalTerrain::handleNodeIntersection(Ray ray, TerrainNode node,
             if (iterLast.key() != isect.m_t)
                 p_activeNodes->remove(p_activeNodes->end().key());
         }
+        return true;
     }
 }
 

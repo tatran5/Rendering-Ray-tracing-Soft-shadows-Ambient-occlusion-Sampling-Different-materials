@@ -14,7 +14,7 @@ public:
     FractalTerrain(int maxDepth, TerrainNode rootNode);
 
     bool getIntersection(Ray ray, Intersection *p_intersection);
-    void handleNodeIntersection(Ray ray, TerrainNode node,
+    bool handleNodeIntersection(Ray ray, TerrainNode node,
                                 QMap<float, TerrainNode> *p_activeNodes);
 };
 
