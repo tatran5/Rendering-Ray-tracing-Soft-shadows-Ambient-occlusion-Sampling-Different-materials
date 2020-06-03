@@ -55,10 +55,10 @@ void MainWindow::on_createAndSave()
 
 void MainWindow::testTerrain(QImage *p_image, float length, Camera *p_cam) {
     Scene scene = Scene();
-    p_cam->m_eye = Point3f(0.f, 0.f, 12);
+    p_cam->m_eye = Point3f(0.5f, 0.5f, 2.f);
     scene.p_cam = p_cam;
     // Test terrain node
-    QList<Point3f> verts = {Point3f(-1, 0, 0), Point3f(0, 0, 0), Point3f(-1, 1, 0)};
+    QList<Point3f> verts = {Point3f(0, 0, 0), Point3f(1, 0, 0), Point3f(0, 1, 0)};
     TerrainNode terNode = TerrainNode(0, verts);
     FractalTerrain terrain = FractalTerrain(0, terNode);
 
