@@ -13,7 +13,6 @@ class Primitive;
 class Intersection
 {
 public:
-
     Point3f m_point; //The point on the surface (in world space) at which the intersection occurred.
     Normal3f m_normal; //The surface normal at the point of intersection in world space.
     float m_t; //The distance along the Ray at which this point of intersection lies.

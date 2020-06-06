@@ -16,7 +16,6 @@ Color3f LambertMaterial::getScatteredColor(Intersection *p_intersection, Ray *p_
     Color3f color = Color3f(0.f, 0.f, 0.f);
     float numLight = 0.f;
 
-
     //iterate through all of the primitives in the scene to check for light sources
     for (int i = 0; i < mp_scene->m_listUPointerPrim.size(); i ++) {
         Primitive* p_prim = mp_scene->m_listUPointerPrim.at(i).get();

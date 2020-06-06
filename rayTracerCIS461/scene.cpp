@@ -14,7 +14,6 @@ bool Scene::getIntersection(Ray ray, Intersection* p_intersection) const {
         Primitive* p_curPrimitive = m_listUPointerPrim.at(i).get();
         tempIsIntersected = p_curPrimitive->getIntersection(ray, &curIntersection);
 
-
         if (tempIsIntersected && curIntersection.m_t < p_intersection->m_t) {
             isIntersected = true;
             p_intersection->m_t = curIntersection.m_t;
